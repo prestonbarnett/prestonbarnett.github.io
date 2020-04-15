@@ -5,6 +5,7 @@ var renderer  = new THREE.WebGLRenderer({
 var canvas = document.getElementById("terrain-canvas")
 canvas.appendChild( renderer.domElement );
 var onRenderFcts= [];
+var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 var scene = new THREE.Scene();
 var camera  = new THREE.PerspectiveCamera(25, window.innerWidth /    window.innerHeight, 0.01, 1000);
 var cameraCenter = new THREE.Vector3();
@@ -55,7 +56,12 @@ mesh.scale.z  = 0.20;
 mesh.scale.multiplyScalar(10);
 
 onRenderFcts.push(function(){
-  updateCamera();
+  if(!iOS) {
+    updateCamera();
+  } else {
+    mesh.rotation.z += 0.001
+    camera.lookAt(new THREE.Vector3(0,.5,0))
+  }
   renderer.render( scene, camera );   
 })
 
@@ -71,6 +77,7 @@ requestAnimationFrame(function animate(nowMsec){
   })
 })
 
+
 document.addEventListener('mousemove', onDocumentMouseMove, false);
 window.addEventListener( 'resize', onWindowResize, false );
 
@@ -85,11 +92,6 @@ function onDocumentMouseMove(event) {
     event.preventDefault();
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = (event.clientY / window.innerHeight) * 2 + 1;
-}
-
-window.ondevicemotion = function(event) {
-  mouse.x = (event.accelerationIncludingGravity.x) * 2 - 1;
-  mouse.y = (event.accelerationIncludingGravity.y) * 2 + 1;
 }
 
 function onWindowResize() {
