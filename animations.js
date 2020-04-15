@@ -13,6 +13,7 @@ var controller = new ScrollMagic.Controller();
 // .setTween(t1)
 // .addTo(controller);
 
+gsap.from(".introduction", {scale: 0.5, y: -50, duration: 1});
 
 $('.fade-in').each(function() {
 
