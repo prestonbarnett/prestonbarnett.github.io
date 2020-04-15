@@ -87,6 +87,11 @@ function onDocumentMouseMove(event) {
     mouse.y = (event.clientY / window.innerHeight) * 2 + 1;
 }
 
+window.ondevicemotion = function(event) {
+  mouse.x = (event.accelerationIncludingGravity.x) * 2 - 1;
+  mouse.y = (event.accelerationIncludingGravity.y) * 2 + 1;
+}
+
 function onWindowResize() {
   camera.aspect = canvas.clientWidth / canvas.clientHeight;
 
