@@ -1,0 +1,25 @@
+{
+  "name": "prestonbarnett.github.io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run open",
+    "open": "concurrently \"http-server -a 192.168.17.53 -p 80\" \"open http://192.168.17.53:80/build\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prestonbarnett/prestonbarnett.github.io.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/prestonbarnett/prestonbarnett.github.io/issues"
+  },
+  "homepage": "https://github.com/prestonbarnett/prestonbarnett.github.io#readme",
+  "devDependencies": {
+    "concurrently": "^5.1.0",
+    "http-server": "^0.12.1"
+  }
+}
