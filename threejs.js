@@ -11,6 +11,7 @@ var camera  = new THREE.PerspectiveCamera(25, window.innerWidth /    window.inne
 var cameraCenter = new THREE.Vector3();
 var cameraHorzLimit = 1;
 var cameraVertLimit = 1;
+var scroll_pos = 0;
 var mouse = new THREE.Vector2();
 
 camera.aspect = canvas.clientWidth / canvas.clientHeight;
@@ -59,8 +60,11 @@ onRenderFcts.push(function(){
   if(!iOS) {
     updateCamera();
   } else {
-    mesh.rotation.z += 0.001
-    camera.lookAt(new THREE.Vector3(0,.5,0))
+    mesh.rotation.z += 0.001;
+    var y = 4 + scroll_pos;
+    var camera_position = new THREE.Vector3(camera.position.x,y,camera.position.z);
+    camera.position.lerp(camera_position, .05);
+    camera.lookAt(new THREE.Vector3(0,.5,0));
   }
   renderer.render( scene, camera );   
 })
@@ -83,8 +87,11 @@ window.addEventListener( 'resize', onWindowResize, false );
 
 function updateCamera() {
     //offset the camera x/y based on the mouse's position in the window
-    camera.position.x = cameraCenter.x + (cameraHorzLimit * mouse.x);
-    camera.position.z = cameraCenter.z + (cameraVertLimit * mouse.y);
+    var x = cameraCenter.x + (cameraHorzLimit * mouse.x);
+    var z = cameraCenter.z + (cameraVertLimit * mouse.y);
+    var y = 4 + scroll_pos
+    var camera_position = new THREE.Vector3(x,y,z)
+    camera.position.lerp(camera_position, .05);
     camera.lookAt(new THREE.Vector3(0,.5,0));
 }
 
@@ -100,4 +107,11 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+}
+
+window.addEventListener("scroll", getScrollPercent);
+
+function getScrollPercent() {
+  scroll_pos = window.pageYOffset || document.documentElement.scrollTop;
+  scroll_pos /= 1000;
 }
