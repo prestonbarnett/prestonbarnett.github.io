@@ -18,17 +18,17 @@ $(document).ready(function() {
   .setClassToggle(".contact-me", "visible")
   .addTo(controller);
 
-  $('.fade-in').each(function() {
+  // $('.fade-in').each(function() {
 
-      var currentStrong = this;
+  //     var currentStrong = this;
 
-      var t1 = new TimelineMax();
+  //     var t1 = new TimelineMax();
 
-      t1.to(currentStrong, 0, {css:{className:'+=visible'}}, 0).from(currentStrong, .2, {y: 50}, 0);
+  //     t1.to(currentStrong, 0, {css:{className:'+=visible'}}, 0).from(currentStrong, .2, {y: 50}, 0);
 
-      var scene = new ScrollMagic.Scene({triggerElement: currentStrong, offset: -$(window).height()*.2, triggerHook: .7}).setTween(t1).addTo(controller);
-  });
-  $("#learn_more").click(function() {
-      $("html, body").animate({ scrollTop: $("#stage").offset().top - 100 }, 1000);
-  });
+  //     var scene = new ScrollMagic.Scene({triggerElement: currentStrong, offset: -$(window).height()*.2, triggerHook: .7}).setTween(t1).addTo(controller);
+  // });
+  // $("#learn_more").click(function() {
+  //     $("html, body").animate({ scrollTop: $("#stage").offset().top - 100 }, 1000);
+  // });
 });

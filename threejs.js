@@ -1,6 +1,6 @@
 var renderer  = new THREE.WebGLRenderer({
-    antialias : true
-  });
+  antialias : true
+});
 
 var canvas = document.getElementById("terrain-canvas")
 canvas.appendChild( renderer.domElement );
@@ -9,8 +9,8 @@ var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 var scene = new THREE.Scene();
 var camera  = new THREE.PerspectiveCamera(25, window.innerWidth /    window.innerHeight, 0.01, 1000);
 var cameraCenter = new THREE.Vector3();
-var cameraHorzLimit = 1;
-var cameraVertLimit = 1;
+var cameraHorzLimit = 1.5;
+var cameraVertLimit = 1.5;
 var scroll_pos = 0;
 var mouse = new THREE.Vector2();
 
@@ -28,17 +28,19 @@ cameraCenter.z = camera.position.z;
 
 var light = new THREE.AmbientLight( 'white' )
 scene.add( light )
+
 var light = new THREE.DirectionalLight('white', 5)
 light.position.set(0.5, 0.0, 2)
 scene.add( light )
+
 var light = new THREE.DirectionalLight('white', 0.75*2)
 light.position.set(-0.5, -0.5, -2)
 scene.add( light )    
 
-var heightMap = THREEx.Terrain.allocateHeightMap(256,256)
-THREEx.Terrain.simplexHeightMap(heightMap)  
-var geometry  = THREEx.Terrain.heightMapToPlaneGeometry(heightMap)
-THREEx.Terrain.heightMapToVertexColor(heightMap, geometry)
+var heightMap = THREEx.Terrain.allocateHeightMap(256,256);
+THREEx.Terrain.simplexHeightMap(heightMap);
+var geometry  = THREEx.Terrain.heightMapToPlaneGeometry(heightMap);
+THREEx.Terrain.heightMapToVertexColor(heightMap, geometry);
 
 var wire_color = new THREE.Color('gray');
 var material  = new THREE.MeshBasicMaterial({
@@ -69,28 +71,29 @@ onRenderFcts.push(function(){
   renderer.render( scene, camera );   
 })
 
-var lastTimeMsec= null
+var lastTimeMsec= null;
 
 requestAnimationFrame(function animate(nowMsec){
   requestAnimationFrame( animate );
-  lastTimeMsec  = lastTimeMsec || nowMsec-1000/60
-  var deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
-  lastTimeMsec  = nowMsec
+  lastTimeMsec  = lastTimeMsec || nowMsec-1000/60;
+  var deltaMsec = Math.min(200, nowMsec - lastTimeMsec);
+  lastTimeMsec  = nowMsec;
   onRenderFcts.forEach(function(onRenderFct){
-    onRenderFct(deltaMsec/1000, nowMsec/1000)
+    onRenderFct(deltaMsec/1000, nowMsec/1000);
   })
 })
 
 
 document.addEventListener('mousemove', onDocumentMouseMove, false); 
 window.addEventListener( 'resize', onWindowResize, false );
+window.addEventListener('scroll', getScrollPercent);
 
 function updateCamera() {
     //offset the camera x/y based on the mouse's position in the window
     var x = cameraCenter.x + (cameraHorzLimit * mouse.x);
     var z = cameraCenter.z + (cameraVertLimit * mouse.y);
-    var y = 4 + scroll_pos
-    var camera_position = new THREE.Vector3(x,y,z)
+    var y = 4 + scroll_pos;
+    var camera_position = new THREE.Vector3(x,y,z);
     camera.position.lerp(camera_position, .05);
     camera.lookAt(new THREE.Vector3(0,.5,0));
 }
@@ -102,14 +105,14 @@ function onDocumentMouseMove(event) {
 }
 
 function onWindowResize() {
-  camera.aspect = canvas.clientWidth / canvas.clientHeight;
+  if(!iOS || $(window).width() > 768) {
+    camera.aspect = canvas.clientWidth / canvas.clientHeight;
 
-  camera.updateProjectionMatrix();
+    camera.updateProjectionMatrix();
 
-  renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+  }
 }
-
-window.addEventListener("scroll", getScrollPercent);
 
 function getScrollPercent() {
   scroll_pos = window.pageYOffset || document.documentElement.scrollTop;
