@@ -33,14 +33,37 @@ function contentAnimation() {
 
 $(document).ready(function() {
     barba.init({
-      transitions: [{
-        name: 'default-transition',
-        leave() {
-          pageTransition()
-        },
-        enter() {
-          print("ENTERING")
-        }
-      }]
+        sync: true,
+
+        transitions: [
+            {
+                async leave(data) {
+                    const done = this.async();
+
+                    pageTransition();
+                    await delay(1000);
+                    done();
+                },
+
+                async enter(data) {
+                    contentAnimation();
+                    $(document).find('script').each(function (i, script) {
+                            var $script = $(script);
+                            $.ajax({
+                                url: $script.attr('src'),
+                                cache: true,
+                                dataType: 'script',
+                                success: function () {
+                                    $script.trigger('load');
+                                }
+                            });
+                        });
+                },
+
+                async once(data) {
+                    contentAnimation();
+                },
+            },
+        ],
     });
 });

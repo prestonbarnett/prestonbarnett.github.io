@@ -273,6 +273,10 @@ h1 {
           transition: all 1s ease-in-out;
 }
 
+a {
+  text-decoration: none;
+}
+
 .loading-screen {
     position: relative;
     padding-left: 0;
