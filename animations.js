@@ -1,7 +1,6 @@
 var controller = new ScrollMagic.Controller();
 
-$(document).ready(function() {
-
+function init_home_animations() {
   var t1 = new TimelineMax();
 
   t1.from(".contact-me", .2, {y: 50}, 0);
@@ -31,4 +30,4 @@ $(document).ready(function() {
   $("#learn_more").click(function() {
       $("html, body").animate({ scrollTop: $("#stage").offset().top - 100 }, 1000);
   });
-});
+}

@@ -9,9 +9,10 @@ function delay(n) {
 
 function pageTransition() {
     var tl = gsap.timeline();
+
     tl.to(".loading-screen", {
         duration: 1.2,
-        width: "100%",
+        width: "105%",
         left: "0%",
         ease: "Expo.easeInOut",
     });
@@ -33,6 +34,8 @@ function contentAnimation() {
 
 $(document).ready(function() {
     barba.init({
+        cacheIgnore: ['index.html'],
+
         sync: true,
 
         transitions: [
@@ -55,18 +58,26 @@ $(document).ready(function() {
             },
         ],
         views: [{
-            namespace: 'about_section',
-            beforeEnter(data) {
-            }
-          }, {
             namespace: 'home_section',
-            beforeEnter(data) {
-              var script = document.createElement('script');
-              script.src = "./animations.js";
-              document.getElementById("main").appendChild(script)
-              var script = document.createElement('script');
-              script.src = "./threejs.js";
-              document.getElementById("main").appendChild(script)
+            async beforeEnter(data) {
+                var tl = gsap.timeline();
+
+                tl.to("#terrain-canvas", { duration: 1, opacity: 0.2 });
+
+                init_home_listen();
+                init_home_animations();
+
+              $("html, body").animate({ scrollTop: scroll_home }, 1000);
+            }, async beforeLeave(data) {
+                var tl = gsap.timeline();
+
+                tl.to("#terrain-canvas", { duration: 1, opacity: 0 });
+
+                scroll_home = window.scrollY
+                document.removeEventListener('mousemove', onDocumentMouseMove); 
+                window.removeEventListener( 'resize', onWindowResize);
+                window.removeEventListener('scroll', getScrollPercent);
+                console.log(scroll_home)   
             }
           }]
     });

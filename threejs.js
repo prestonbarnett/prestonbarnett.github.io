@@ -84,9 +84,11 @@ requestAnimationFrame(function animate(nowMsec){
 })
 
 
-document.addEventListener('mousemove', onDocumentMouseMove, false); 
-window.addEventListener( 'resize', onWindowResize, false );
-window.addEventListener('scroll', getScrollPercent);
+function init_home_listen() {
+  document.addEventListener('mousemove', onDocumentMouseMove, false); 
+  window.addEventListener( 'resize', onWindowResize, false );
+  window.addEventListener('scroll', getScrollPercent);
+}
 
 function updateCamera() {
     //offset the camera x/y based on the mouse's position in the window
