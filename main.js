@@ -47,17 +47,6 @@ $(document).ready(function() {
 
                 async enter(data) {
                     contentAnimation();
-                    $(document).find('script').each(function (i, script) {
-                            var $script = $(script);
-                            $.ajax({
-                                url: $script.attr('src'),
-                                cache: true,
-                                dataType: 'script',
-                                success: function () {
-                                    $script.trigger('load');
-                                }
-                            });
-                        });
                 },
 
                 async once(data) {
@@ -65,5 +54,20 @@ $(document).ready(function() {
                 },
             },
         ],
+        views: [{
+            namespace: 'about_section',
+            beforeEnter(data) {
+            }
+          }, {
+            namespace: 'home_section',
+            beforeEnter(data) {
+              var script = document.createElement('script');
+              script.src = "./animations.js";
+              document.getElementById("main").appendChild(script)
+              var script = document.createElement('script');
+              script.src = "./threejs.js";
+              document.getElementById("main").appendChild(script)
+            }
+          }]
     });
 });
